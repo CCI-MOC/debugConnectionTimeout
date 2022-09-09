@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moc-xdmod
+spec:
+  selector:
+    matchLabels:
+      app: xdmod
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: xdmod
+    spec:build.build.openshift.io/bc-xdmod-1
+      containers:
+        - image: moc-xdmod-dev
+          name: xdmod-init-2
+          imagePullPolicy: IfNotPresent
+          command:
+            - "sleep"
+          args:
+            - "10000"
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: vol-xdmod-conf
+              mountPath: /etc/xdmod
+            - name: vol-xdmod-src
+              mountPath: /usr/share/xdmod
+      initContainers:
+        - image: moc-xdmod-dev
+          name: xdmod-init-1
+          imagePullPolicy: IfNotPresent
+          command:
+            - "/usr/bin/xdmod-init"
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: vol-xdmod-conf
+              mountPath: /mnt/xdmod_conf
+            - name: vol-xdmod-src
+              mountPath: /mnt/xdmod_src
+            - name: vol-xdmod-init
+              mountPath: /root/xdmod_init
+      volumes:
+        - name: vol-xdmod-conf
+          persistentVolumeClaim:
+            claimName: pvc-xdmod-conf
+        - name: vol-xdmod-src
+          persistentVolumeClaim:
+            claimName: pvc-xdmod-src
+        - name: vol-xdmod-init
+          configMap:
+            items:
+              - key: xdmod_init.json
+                path: xdmod_init.json
+            name: cm-xdmod-init-json
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - xdmod
+        from:
+          kind: ImageStreamTag
+          namespace: xdmod
+          name: "moc-xdmod-dev:latest"

@@ -1,0 +1,126 @@
+FROM centos:7.9.2009
+ENV BRANCH=xdmod10.0
+
+COPY assets/google-chrome.repo /etc/yum.repos.d
+
+# Dependencies needed by XDMoD
+RUN yum makecache && \
+    yum -y install epel-release centos-release-scl-rh && \
+    yum -y install \
+    expect \
+    gcc-c++ \
+    gnu-free-sans-fonts \
+    google-chrome-stable \
+    npm \
+    openssl \
+    postfix \ 
+    rh-nodejs6 \
+    rpm-build \
+    wget \
+    rh-python38.x86_64 \
+    python3-pip.noarch \
+    git \
+    openssh-clients.x86_64 \
+    httpd php php-cli php-mysql php-gd php-pdo php-xml \
+    libreoffice \
+    mariadb-server mariadb cronie logrotate \
+    perl-Image-ExifTool php-mbstring php-pecl-apcu jq \
+    chromium-headless librsvg2-tools
+
+RUN yum clean all && \
+    rm -rf /var/cache/yum
+
+# Set PHP timezone before installing XDMoD as the setup scripts need it. Be careful
+# changing the timezone as it may break integration test results if they were written
+# for a different zone.
+RUN sed -i 's/.*date.timezone[[:space:]]*=.*/date.timezone = UTC/' /etc/php.ini && \
+    sed -i 's/.*memory_limit[[:space:]]*=.*/memory_limit = -1/' /etc/php.ini && \
+    rm /etc/localtime && \
+    ln -s /usr/share/zoneinfo/UTC /etc/localtime
+
+# Setup Postfix
+RUN sed -ie 's/inet_interfaces = localhost/#inet_interfaces = localhost/' /etc/postfix/main.cf  && \
+    sed -ie 's/smtp      inet  n       -       n       -       -       smtpd/#smtp      inet  n       -       n       -       -       smtpd/' /etc/postfix/master.cf && \
+    sed -ie 's/smtp      unix  -       -       n       -       -       smtp/smtp      unix  -       -       n       -       -       local/' /etc/postfix/master.cf && \
+    sed -ie 's/relay     unix  -       -       n       -       -       smtp/relay     unix  -       -       n       -       -       local/' /etc/postfix/master.cf && \
+    echo '/.*/ root' >> /etc/postfix/virtual && \
+    postmap /etc/postfix/virtual && \
+    echo 'virtual_alias_maps = regexp:/etc/postfix/virtual' >> /etc/postfix/main.cf && \
+    newaliases
+
+# Install Composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)" && \
+    ACTUAL_SIGNATURE="$(php -r "echo hash_file('SHA384', 'composer-setup.php');")" && \
+    if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]; then echo 'ERROR: Invalid composer signature'; exit 1; fi && \
+    php composer-setup.php --install-dir=/bin --filename=composer --1 && \
+    php -r "unlink('composer-setup.php');"
+
+WORKDIR /root
+
+# the python clients required to connect to openstack
+RUN mkdir -p /root/rpmbuild/RPMS/noarch \
+    && mkdir /tmp/supremm \
+    && pip3 install --upgrade pip \
+    && pip3 install keystoneauth python-keystoneclient python-novaclient python-cinderclient cryptography python-openstacksdk mysql-connector-python pexpect
+
+# RPM install of xdmod
+RUN yum -y install  https://github.com/ubccr/xdmod/releases/download/v10.0.0/xdmod-10.0.0-1.0.el7.noarch.rpm
+
+#COPY ./xdmod_conf/httpd.conf /etc/httpd/conf/httpd.conf
+RUN rm -f /etc/httpd/conf.d/ssl.conf \
+    && rm -f /run/httpd/httpd.pid
+
+# openstack reporting
+COPY ./hypervisor_facts.py /usr/bin/xdmod-openstack-hypervisor
+COPY ./moc_openstack_api_reporting.py /usr/bin/xdmod-openstack-reporting
+COPY ./GetConfigFiles.py /usr/bin/xdmod-get-config-files
+COPY ./xdmod-run-ingestor.sh /usr/bin/xdmod-run-ingestor.sh
+COPY ./xdmod_init.py /usr/bin/xdmod-init 
+RUN chmod 774 /usr/bin/xdmod-openstack-hypervisor \
+    && sed -i -e 's/\r$//' /usr/bin/xdmod-openstack-hypervisor \
+    && chmod 774 /usr/bin/xdmod-openstack-reporting \
+    && sed -i -e 's/\r$//' /usr/bin/xdmod-openstack-reporting \ 
+    && chmod 774 /usr/bin/xdmod-init \
+    && sed -i -e 's/\r$//' /usr/bin/xdmod-init \ 
+    && chmod 774 /usr/bin/xdmod-get-config-files \
+    && sed -i -e 's/\r$//' /usr/bin/xdmod-get-config-files \ 
+    && chmod 774 /usr/bin/xdmod-run-ingestor.sh \
+    && sed -i -e 's/\r$//' /usr/bin/xdmod-run-ingestor.sh \ 
+    && chmod -R g+rwx /usr/bin \
+    && chgrp -R 0 /usr/bin \
+    && chmod -R g+rwx /root \
+    && chgrp -R 0 /root \
+    && chgrp -R 0 /etc/xdmod \
+    && find /etc/xdmod -type d -exec chmod 774 {} + \
+    && find /etc/xdmod -type f -exec chmod 664 {} + \
+    && chgrp -R 0 /etc/httpd \
+    && find /etc/httpd -type d -exec chmod 774 {} + \
+    && find /etc/httpd -type f -exec chmod 664 {} +
+
+# openshift client
+RUN curl -O https://mirror.openshift.com/pub/openshift-v4/$(uname -m)/clients/ocp/stable/openshift-client-linux.tar.gz \
+    && tar xvf openshift-client-linux.tar.gz \
+    && cp oc /usr/bin/oc \
+    && chmod g+rwx /usr/bin/oc
+
+# openshift reporting
+COPY ./xdmod-openshift-reporting.sh /usr/bin/xdmod-openshift-reporting.sh
+RUN git clone https://github.com/OCP-on-NERC/xdmod-openshift-scripts \
+    && cd xdmod-openshift-scripts \
+    && pip install -r requirements.txt \
+    && chmod g+rwx /usr/bin/xdmod-openshift-reporting.sh
+
+# force downgrade of mysql-connector-python
+# https://stackoverflow.com/questions/73244027/character-set-utf8-unsupported-in-python-mysql-connector
+RUN pip3 install -I mysql-connector-python==8.0.29
+
+COPY ./assets/allow_insecure_tokens.py /root
+RUN python3 /root/allow_insecure_tokens.py \
+    && rm /root/allow_insecure_tokens.py
+
+EXPOSE 8080
+
+CMD ["/usr/sbin/httpd","-D", "FOREGROUND"]
+
+WORKDIR /

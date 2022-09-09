@@ -1,0 +1,21 @@
+commonLabels:
+  app: xdmod
+
+resources:
+  - pvc-mariadb.yaml
+  - pvc-xdmod-conf.yaml
+  - pvc-xdmod-src.yaml
+  - svc-mariadb.yaml
+  - deployment-mariadb.yaml
+  - deployment-xdmod.yaml
+
+configMapGenerator:
+  - name: cm-xdmod-init-json
+    files:
+      - xdmod_init.json
+generatorOptions:
+  disableNameSuffixHash: true
+  labels:
+    type: generated
+  annotations:
+    note: generated
