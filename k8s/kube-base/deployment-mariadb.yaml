@@ -25,6 +25,8 @@ spec:
           volumeMounts:
             - name: vol-mariadb
               mountPath: /var/lib/mysql
+            - name: vol-mariadb-log
+              mountPath: /var/log/mysql
             - name: vol-mariadb-conf
               mountPath: /etc/mysql/my.cnf
               subPath: my.cnf
@@ -38,6 +40,9 @@ spec:
         - name: vol-mariadb
           persistentVolumeClaim:
             claimName: pvc-mariadb
+        - name: vol-mariadb-log
+          persistentVolumeClaim:
+            claimName: pvc-mariadb-log
         - name: vol-mariadb-conf
           configMap:
             name: cm-mariadb-conf

@@ -3,6 +3,8 @@ commonLabels:
 
 resources:
   - pvc-mariadb.yaml
+  - pvc-mariadb-log.yaml
+  - pvc-xdmod-data.yaml
   - pvc-xdmod-conf.yaml
   - pvc-xdmod-src.yaml
   - svc-mariadb.yaml
