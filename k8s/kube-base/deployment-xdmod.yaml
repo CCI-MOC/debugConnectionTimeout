@@ -5,13 +5,13 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: xdmod
+      component: xdmod
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: xdmod
+        component: xdmod
     spec:
       containers:
         - image: image-registry.openshift-image-registry.svc:5000/test001/moc-xdmod
