@@ -1,0 +1,227 @@
+Rob@Roberts-Computer debugConnectionTimeout % oc rsh moc-xdmod-ddb4c6895-8qrff
+Defaulted container "xdmod-debug" out of: xdmod-debug, xdmod-init-1 (init)
+sh-4.2$ xdmod-init
+/usr/local/lib/python3.6/site-packages/mysql/connector/authentication.py:44: CryptographyDeprecationWarning: Python 3.6 is no longer supported by the Python core team. Therefore, support for it is deprecated in cryptography and will be removed in a future release.
+  from cryptography.exceptions import UnsupportedAlgorithm
+Create the file share database
+xdmod_init.json found, attempting to initialize xdmod 
+Intializing general settings
+running comand xdmod-setup
+Select an option \(1, 2, 3, 4, 5, 6, 7, 8, q\): 
+
+Site Address: \[.*\]
+
+Email Address:
+
+Chromium Path: \[.*\]
+
+Center Logo Path:
+
+Enable Dashboard Tab \(on, off\)\? \[off\]
+
+Overwrite config file '/etc/xdmod/portal_settings.ini' \(yes, no\)\? \[yes\]
+
+Press ENTER to continue.
+
+Select an option \(1, 2, 3, 4, 5, 6, 7, 8, q\): 
+
+Databases:
+Connected to database 
+    user_count(1) = 0
+    user_count(2) = 0
+sql mode set
+Creating databases
+table_count = 0
+   table_count = 0
+    seting up databases (and resources)
+running comand xdmod-setup
+Select an option \(1, 2, 3, 4, 5, 6, 7, 8, q\): 
+
+DB Hostname or IP: \[.*\] 
+
+DB Port: \[.*\] 
+
+DB Username: \[.*\] 
+
+DB Password: 
+
+\(confirm\) DB Password: 
+
+DB Admin Username: \[root\] 
+
+DB Admin Password: 
+
+\(confirm\) DB Admin Password: 
+
+Database `mod_shredder` already exists.*\r\nDrop and recreate database \(yes, no\)\? \[.*\] 
+
+Database `mod_hpcdb` already exists.*\r\nDrop and recreate database \(yes, no\)\? \[.*\]
+
+Database `moddb` already exists.*\r\nDrop and recreate database \(yes, no\)\? \[.*\]
+
+Database `modw` already exists..*\r\nDrop and recreate database \(yes, no\)\? \[.*\]
+
+Database `modw_aggregates` already exists.*\r\nDrop and recreate database \(yes, no\)\? \[.*\]
+
+Database `modw_filters` already exists.*\r\nDrop and recreate database \(yes, no\)\? \[.*\]
+
+Database `mod_logger` already exists.*\r\nDrop and recreate database \(yes, no\)\? \[.*\]
+
+Overwrite config file '/etc/xdmod/portal_settings.ini' \(yes, no\)\? \[.*\]
+
+Press ENTER to continue.
+
+Select an option \(1, 2, 3, 4, 5, 6, 7, 8, q\): 
+
+Administrative Account:
+running comand xdmod-setup
+Select an option \(1, 2, 3, 4, 5, 6, 7, 8, q\): 
+
+Username: 
+
+Password: 
+
+\(confirm\) Password: 
+
+First name: 
+
+Last name: 
+
+Email address: 
+
+Press ENTER to continue.
+
+Select an option \(1, 2, 3, 4, 5, 6, 7, 8, q\): 
+
+running comand xdmod-setup
+Select an option \(1, 2, 3, 4, 5, 6, 7, 8, q\):
+
+Select an option \(1, 2, s\): 
+
+Resource Name: 
+
+Formal Name:
+
+Resource Type \(.*\): \[.*\] 
+
+How many nodes does this resource have\? 
+
+How many total processors \(cpu cores\) does this resource have\? 
+
+Select an option \(1, 2, s\): 
+
+Overwrite config file '/etc/xdmod/resources.json' \(yes, no\)\? \[yes\] 
+
+Press ENTER to continue. 
+
+Overwrite config file '/etc/xdmod/resource_specs.json' \(yes, no\)\? \[yes\] 
+
+Press ENTER to continue. 
+
+Select an option \(1, 2, 3, 4, 5, 6, 7, 8, q\):
+
+running comand xdmod-setup
+Select an option \(1, 2, 3, 4, 5, 6, 7, 8, q\):
+
+Select an option \(1, 2, s\): 
+
+Resource Name: 
+
+Formal Name:
+
+Resource Type \(.*\): \[.*\] 
+
+How many nodes does this resource have\? 
+
+How many total processors \(cpu cores\) does this resource have\? 
+
+Select an option \(1, 2, s\): 
+
+Overwrite config file '/etc/xdmod/resources.json' \(yes, no\)\? \[yes\] 
+
+Press ENTER to continue. 
+
+Overwrite config file '/etc/xdmod/resource_specs.json' \(yes, no\)\? \[yes\] 
+
+Press ENTER to continue. 
+
+Select an option \(1, 2, 3, 4, 5, 6, 7, 8, q\):
+
+running comand xdmod-setup
+Select an option \(1, 2, 3, 4, 5, 6, 7, 8, q\):
+
+Select an option \(1, 2, s\): 
+
+Resource Name: 
+
+Formal Name:
+
+Resource Type \(.*\): \[.*\] 
+
+How many nodes does this resource have\? 
+
+How many total processors \(cpu cores\) does this resource have\? 
+
+Select an option \(1, 2, s\): 
+
+Overwrite config file '/etc/xdmod/resources.json' \(yes, no\)\? \[yes\] 
+
+Press ENTER to continue. 
+
+Overwrite config file '/etc/xdmod/resource_specs.json' \(yes, no\)\? \[yes\] 
+
+Press ENTER to continue. 
+
+Select an option \(1, 2, 3, 4, 5, 6, 7, 8, q\):
+
+running comand xdmod-setup
+Select an option \(1, 2, 3, 4, 5, 6, 7, 8, q\):
+
+Select an option \(1, 2, s\): 
+
+Resource Name: 
+
+Formal Name:
+
+Resource Type \(.*\): \[.*\] 
+
+How many nodes does this resource have\? 
+
+How many total processors \(cpu cores\) does this resource have\? 
+
+Select an option \(1, 2, s\): 
+
+Overwrite config file '/etc/xdmod/resources.json' \(yes, no\)\? \[yes\] 
+
+Press ENTER to continue. 
+
+Overwrite config file '/etc/xdmod/resource_specs.json' \(yes, no\)\? \[yes\] 
+
+Press ENTER to continue. 
+
+Select an option \(1, 2, 3, 4, 5, 6, 7, 8, q\):
+
+ Organization 
+running comand xdmod-setup
+Select an option \(1, 2, 3, 4, 5, 6, 7, 8, q\): 
+
+Organization Name: 
+
+Organization Abbreviation: 
+
+Overwrite config file '/etc/xdmod/organization.json' \(yes, no\)\? \[.*\]
+
+Press ENTER to continue.*
+
+Select an option \(1, 2, 3, 4, 5, 6, 7, 8, q\): 
+
+Create the file share database
+set server_root in /etc/httpd/conf/httpd.conf
+   Ingesting resources
+tar: Removing leading `/' from member names
+ Writing /etc/xdmod/etc_xdmod.b64 to db
+sh-4.2$ ETL\EtlOverseer: Error verifying data endpoints:
+('Shredder/Staging Database', class=ETL\DataEndpoint\Mysql, config=database, schema=mod_shredder, host=mariadb:3306, user=xdmod): Error querying for schema 'mod_shredder' Exception: 'SQLSTATE[HY000] [2003] Can't connect to MySQL server on 'mariadb' (110)' Using DataEndpoint: '('Shredder/Staging Database', class=ETL\DataEndpoint\Mysql, config=database, schema=mod_shredder, host=mariadb:3306, user=xdmod)'
+#0 /usr/share/xdmod/classes/ETL/EtlOverseer.php(379): ETL\EtlOverseer->verifyDataEndpoints(Object(ETL\Configuration\EtlConfiguration), true)
+#1 /usr/share/xdmod/tools/etl/etl_overseer.php(608): ETL\EtlOverseer->execute(Object(ETL\Configuration\EtlConfiguration))
+#2 {main}

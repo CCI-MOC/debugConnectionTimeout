@@ -1,0 +1,19 @@
+2022-09-09 21:36:26 [error] {"sql":"SELECT
+schema_name as name, catalog_name as catalog
+FROM information_schema.schemata
+WHERE schema_name = :schema","stacktrace":"#0 \/usr\/share\/xdmod\/classes\/CCR\/DB\/PDODB.php(88): PDO->__construct('mysql:host=mari...', 'xdmod', 'pass')
+#1 \/usr\/share\/xdmod\/classes\/CCR\/DB\/PDODB.php(110): CCR\\DB\\PDODB->connect()
+#2 \/usr\/share\/xdmod\/classes\/CCR\/DB\/PDODB.php(204): CCR\\DB\\PDODB->handle()
+#3 \/usr\/share\/xdmod\/classes\/CCR\/DB\/PDODB.php(148): CCR\\DB\\PDODB->prepare('SELECT?schema_n...')
+#4 \/usr\/share\/xdmod\/classes\/ETL\/DataEndpoint\/aRdbmsEndpoint.php(323): CCR\\DB\\PDODB->query('SELECT?schema_n...', Array)
+#5 \/usr\/share\/xdmod\/classes\/ETL\/DataEndpoint\/Mysql.php(84): ETL\\DataEndpoint\\aRdbmsEndpoint->executeSchemaExistsQuery('SELECT?schema_n...', 'mod_shredder')
+#6 \/usr\/share\/xdmod\/classes\/ETL\/DataEndpoint\/aRdbmsEndpoint.php(113): ETL\\DataEndpoint\\Mysql->schemaExists('mod_shredder')
+#7 \/usr\/share\/xdmod\/classes\/ETL\/EtlOverseer.php(115): ETL\\DataEndpoint\\aRdbmsEndpoint->verify(false, true)
+#8 \/usr\/share\/xdmod\/classes\/ETL\/EtlOverseer.php(379): ETL\\EtlOverseer->verifyDataEndpoints(Object(ETL\\Configuration\\EtlConfiguration), true)
+#9 \/usr\/share\/xdmod\/tools\/etl\/etl_overseer.php(608): ETL\\EtlOverseer->execute(Object(ETL\\Configuration\\EtlConfiguration))
+#10 {main}","message":"('Shredder\/Staging Database', class=ETL\\DataEndpoint\\Mysql, config=database, schema=mod_shredder, host=mariadb:3306, user=xdmod): Error querying for schema 'mod_shredder' Exception: 'SQLSTATE[HY000] [2003] Can't connect to MySQL server on 'mariadb' (110)' Using DataEndpoint: '('Shredder\/Staging Database', class=ETL\\DataEndpoint\\Mysql, config=database, schema=mod_shredder, host=mariadb:3306, user=xdmod)'"}
+2022-09-09 21:36:30 [error] ETL\EtlOverseer: Error verifying data endpoints:
+('Shredder/Staging Database', class=ETL\DataEndpoint\Mysql, config=database, schema=mod_shredder, host=mariadb:3306, user=xdmod): Error querying for schema 'mod_shredder' Exception: 'SQLSTATE[HY000] [2003] Can't connect to MySQL server on 'mariadb' (110)' Using DataEndpoint: '('Shredder/Staging Database', class=ETL\DataEndpoint\Mysql, config=database, schema=mod_shredder, host=mariadb:3306, user=xdmod)'
+#0 /usr/share/xdmod/classes/ETL/EtlOverseer.php(379): ETL\EtlOverseer->verifyDataEndpoints(Object(ETL\Configuration\EtlConfiguration), true)
+#1 /usr/share/xdmod/tools/etl/etl_overseer.php(608): ETL\EtlOverseer->execute(Object(ETL\Configuration\EtlConfiguration))
+#2 {main}

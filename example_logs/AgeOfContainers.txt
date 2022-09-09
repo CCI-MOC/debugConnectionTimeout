@@ -1,0 +1,5 @@
+Rob@Roberts-Computer debugConnectionTimeout % oc get pods
+NAME                        READY   STATUS      RESTARTS   AGE
+bc-xdmod-1-build            0/1     Completed   0          69m
+mariadb-66d48c6586-s78dl    1/1     Running     0          69m
+moc-xdmod-ddb4c6895-8qrff   1/1     Running     0          40m
