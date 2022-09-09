@@ -12,30 +12,26 @@ spec:
     metadata:
       labels:
         app: xdmod
-    spec:build.build.openshift.io/bc-xdmod-1
+    spec:
       containers:
-        - image: moc-xdmod-dev
-          name: xdmod-init-2
+        - image: image-registry.openshift-image-registry.svc:5000/test001/moc-xdmod
+          name: xdmod-debug
           imagePullPolicy: IfNotPresent
           command:
             - "sleep"
           args:
             - "10000"
-          ports:
-            - containerPort: 8080
           volumeMounts:
             - name: vol-xdmod-conf
               mountPath: /etc/xdmod
             - name: vol-xdmod-src
               mountPath: /usr/share/xdmod
       initContainers:
-        - image: moc-xdmod-dev
+        - image: image-registry.openshift-image-registry.svc:5000/test001/moc-xdmod
           name: xdmod-init-1
           imagePullPolicy: IfNotPresent
           command:
             - "/usr/bin/xdmod-init"
-          ports:
-            - containerPort: 8080
           volumeMounts:
             - name: vol-xdmod-conf
               mountPath: /mnt/xdmod_conf
