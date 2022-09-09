@@ -146,8 +146,6 @@ def run_pexpect_json(pexpect_json):
             time_out = prompt_resp["timeout"]
         setup.expect(prompt_resp["prompt"], timeout=time_out)
         nap_time = 0.2
-        if "sleep" in prompt_resp:
-            nap_time = prompt_resp["sleep"]
         time.sleep(nap_time)
         setup.sendline(prompt_resp["resp"])
 
