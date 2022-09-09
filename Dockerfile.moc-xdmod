@@ -2,6 +2,7 @@ FROM centos:7.9.2009
 ENV BRANCH=xdmod10.0
 
 COPY assets/google-chrome.repo /etc/yum.repos.d
+COPY test_data/openstack.2018-04-17T00:00:00_2018-04-30T23:59:59.json /root/2018-04-17T00:00:00_2018-04-30T23:59:59.json
 
 # Dependencies needed by XDMoD
 RUN yum makecache && \
