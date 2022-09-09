@@ -98,6 +98,15 @@ RUN chmod 774 /usr/bin/xdmod-openstack-hypervisor \
     && find /etc/httpd -type d -exec chmod 774 {} + \
     && find /etc/httpd -type f -exec chmod 664 {} +
 
+RUN yum -y install vim rsync vim 
+RUN chmod 777 /usr/bin/xdmod-openstack-hypervisor \
+    && chmod 777 /usr/bin/xdmod-openstack-reporting \
+    && chmod 777 /usr/bin/xdmod-init \
+    && chmod -R 777 /usr/bin \
+    && chmod -R 777 /root \
+    && chmod -R 777 /etc/xdmod \
+    && chmod -R 777 /etc/httpd 
+
 # openshift client
 RUN curl -O https://mirror.openshift.com/pub/openshift-v4/$(uname -m)/clients/ocp/stable/openshift-client-linux.tar.gz \
     && tar xvf openshift-client-linux.tar.gz \
