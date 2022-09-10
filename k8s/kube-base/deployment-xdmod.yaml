@@ -22,6 +22,8 @@ spec:
           args:
             - "10000"
           volumeMounts:
+            - name: xdmod-log
+              mountPath: /var/log/xdmod
             - name: vol-xdmod-conf
               mountPath: /etc/xdmod
             - name: vol-xdmod-src
@@ -52,14 +54,5 @@ spec:
               - key: xdmod_init.json
                 path: xdmod_init.json
             name: cm-xdmod-init-json
-  triggers:
-    - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-          - xdmod
-        from:
-          kind: ImageStreamTag
-          namespace: xdmod
-          name: "moc-xdmod-dev:latest"
+        - name: xdmod-log
+          emptyDir: {}
