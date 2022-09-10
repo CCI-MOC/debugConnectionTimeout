@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: moc-xdmod
+  labels:
+    component: xdmod
 spec:
   selector:
     matchLabels:
