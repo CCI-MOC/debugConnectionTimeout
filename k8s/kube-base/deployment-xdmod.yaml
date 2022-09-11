@@ -2,16 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: moc-xdmod
+  labels:
+    component: xdmod
 spec:
   selector:
     matchLabels:
-      app: xdmod
+      component: xdmod
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: xdmod
+        component: xdmod
     spec:
       containers:
         - image: image-registry.openshift-image-registry.svc:5000/test001/moc-xdmod
@@ -22,6 +24,8 @@ spec:
           args:
             - "10000"
           volumeMounts:
+            - name: xdmod-log
+              mountPath: /var/log/xdmod
             - name: vol-xdmod-conf
               mountPath: /etc/xdmod
             - name: vol-xdmod-src
@@ -63,14 +67,5 @@ spec:
               - key: xdmod_init.json
                 path: xdmod_init.json
             name: cm-xdmod-init-json
-  triggers:
-    - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-          - xdmod
-        from:
-          kind: ImageStreamTag
-          namespace: xdmod
-          name: "moc-xdmod-dev:latest"
+        - name: xdmod-log
+          emptyDir: {}
